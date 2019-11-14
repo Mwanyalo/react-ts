@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
-import { Task } from "../models/task";
-import { TaskListItem } from "./TaskListItem";
+import { Task } from "../../models/task";
+import { TaskListItem } from "../TaskListItem/TaskListItem";
 
 interface Props {
   tasks: Task[];
@@ -11,7 +11,7 @@ interface Props {
 export const TasksList: FunctionComponent<Props> = ({ tasks, onDelete }) => (
   <ul>
     {tasks.map(task => (
-      <TaskListItem task={task} onDelete={onDelete} />
+      <TaskListItem key={task.id} task={task} onDelete={onDelete} />
     ))}
   </ul>
 );

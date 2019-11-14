@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import "./App.css";
-import { AddTaskForm } from "./components/AddTaskForm";
-import { TasksList } from "./components/TasksList";
+import { AddTaskForm } from "./components/AddTaskForm/AddTaskForm";
+import { TasksList } from "./components/TasksList/TasksList";
 
 import { Task } from "./models/task";
 
 interface State {
   newTask: Task;
   tasks: Task[];
+  error: string;
 }
 
 class App extends Component<{}, State> {
@@ -16,22 +16,27 @@ class App extends Component<{}, State> {
       id: 1,
       name: ""
     },
-    tasks: []
+    tasks: [],
+    error: ""
   };
 
-  private addTask = (event: React.FormEvent<HTMLFormElement>) => {
+  addTask = (event: any) => {
     event.preventDefault();
-
-    this.setState(previousState => ({
-      newTask: {
-        id: previousState.newTask.id + 1,
-        name: ""
-      },
-      tasks: [...previousState.tasks, previousState.newTask]
-    }));
+    if (this.state.newTask.name !== "") {
+      this.setState(previousState => ({
+        newTask: {
+          id: previousState.newTask.id + 1,
+          name: ""
+        },
+        error: "",
+        tasks: [...previousState.tasks, previousState.newTask]
+      }));
+    } else {
+      this.setState({ error: "Required field!" });
+    }
   };
 
-  private handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleTaskChange = (event: any) => {
     this.setState({
       newTask: {
         ...this.state.newTask,
@@ -40,7 +45,7 @@ class App extends Component<{}, State> {
     });
   };
 
-  private deleteTask = (taskToDelete: Task) => {
+  deleteTask = (taskToDelete: Task) => {
     this.setState(previousState => ({
       tasks: [
         ...previousState.tasks.filter(task => task.id !== taskToDelete.id)
@@ -56,6 +61,7 @@ class App extends Component<{}, State> {
           task={this.state.newTask}
           onAdd={this.addTask}
           onChange={this.handleTaskChange}
+          error={this.state.error}
         />
 
         <TasksList tasks={this.state.tasks} onDelete={this.deleteTask} />

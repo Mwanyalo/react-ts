@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import { Task } from "../models/task";
+import { Task } from "../../models/task";
 
 interface Props {
   task: Task;
